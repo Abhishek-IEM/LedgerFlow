@@ -3,15 +3,9 @@ import { useNavigate, Link } from "react-router-dom";
 import { authApi } from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
-import {
-  BarChart3,
-  Shield,
-  Sun,
-  Moon,
-  Users,
-} from "lucide-react";
+import { BarChart3, Shield, Sun, Moon, Users } from "lucide-react";
 
-const GOOGLE_CLIENT_ID = "707287348073-82ak77d3emfr2m0bs3ldtpm5caflh56c.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -28,6 +22,11 @@ export default function Login() {
   }, [theme]);
 
   const initGoogleButton = () => {
+    if (!GOOGLE_CLIENT_ID) {
+      setError("Google login is not configured.");
+      return;
+    }
+
     if (!window.google || !googleBtnRef.current) {
       // retry until GSI script loads
       const timer = setTimeout(initGoogleButton, 200);
@@ -68,7 +67,8 @@ export default function Login() {
       }
     } catch (err: any) {
       const msg =
-        err.response?.data?.message || "Google sign-in failed. Please try again.";
+        err.response?.data?.message ||
+        "Google sign-in failed. Please try again.";
       setError(msg);
     } finally {
       setLoading(false);
@@ -92,7 +92,8 @@ export default function Login() {
       }
     } catch (err: any) {
       const msg =
-        err.response?.data?.message || "Something went wrong. Please try again.";
+        err.response?.data?.message ||
+        "Something went wrong. Please try again.";
       setError(msg);
     } finally {
       setLoading(false);
@@ -101,7 +102,11 @@ export default function Login() {
 
   return (
     <div className="auth-page">
-      <button className="auth-theme-toggle" onClick={toggleTheme} title="Toggle theme">
+      <button
+        className="auth-theme-toggle"
+        onClick={toggleTheme}
+        title="Toggle theme"
+      >
         {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
       </button>
 
@@ -111,13 +116,54 @@ export default function Login() {
             <div className="auth-brand">
               <div className="auth-brand-icon">
                 <svg width="22" height="22" viewBox="0 0 64 64" fill="none">
-                  <rect x="15" y="12" width="34" height="40" rx="3" fill="rgba(255,255,255,0.2)"/>
-                  <rect x="15" y="12" width="5" height="40" rx="2" fill="rgba(255,255,255,0.3)"/>
-                  <rect x="24" y="19" width="18" height="2" rx="1" fill="rgba(255,255,255,0.6)"/>
-                  <rect x="24" y="26" width="14" height="2" rx="1" fill="rgba(255,255,255,0.4)"/>
-                  <path d="M24 42 C28 38, 33 33, 38 28 Q41 25, 44 22" stroke="#fff" strokeWidth="3" strokeLinecap="round" fill="none"/>
-                  <path d="M39 20 L44 22 L42 27" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                  <circle cx="24" cy="42" r="2.2" fill="#a5f3fc"/>
+                  <rect
+                    x="15"
+                    y="12"
+                    width="34"
+                    height="40"
+                    rx="3"
+                    fill="rgba(255,255,255,0.2)"
+                  />
+                  <rect
+                    x="15"
+                    y="12"
+                    width="5"
+                    height="40"
+                    rx="2"
+                    fill="rgba(255,255,255,0.3)"
+                  />
+                  <rect
+                    x="24"
+                    y="19"
+                    width="18"
+                    height="2"
+                    rx="1"
+                    fill="rgba(255,255,255,0.6)"
+                  />
+                  <rect
+                    x="24"
+                    y="26"
+                    width="14"
+                    height="2"
+                    rx="1"
+                    fill="rgba(255,255,255,0.4)"
+                  />
+                  <path
+                    d="M24 42 C28 38, 33 33, 38 28 Q41 25, 44 22"
+                    stroke="#fff"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    fill="none"
+                  />
+                  <path
+                    d="M39 20 L44 22 L42 27"
+                    stroke="#fff"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    fill="none"
+                  />
+                  <circle cx="24" cy="42" r="2.2" fill="#a5f3fc" />
                 </svg>
               </div>
               <span>LedgerFlow</span>
@@ -160,7 +206,11 @@ export default function Login() {
               />
             </div>
 
-            <button type="submit" className="btn btn-primary btn-full" disabled={loading}>
+            <button
+              type="submit"
+              className="btn btn-primary btn-full"
+              disabled={loading}
+            >
               {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
@@ -180,15 +230,21 @@ export default function Login() {
           </p>
           <ul className="auth-features">
             <li>
-              <span className="feat-icon"><BarChart3 size={14} /></span>
+              <span className="feat-icon">
+                <BarChart3 size={14} />
+              </span>
               Real-time analytics and trend tracking
             </li>
             <li>
-              <span className="feat-icon"><Shield size={14} /></span>
+              <span className="feat-icon">
+                <Shield size={14} />
+              </span>
               Role-based access control for security
             </li>
             <li>
-              <span className="feat-icon"><Users size={14} /></span>
+              <span className="feat-icon">
+                <Users size={14} />
+              </span>
               Multi-user collaboration with audit trails
             </li>
           </ul>
