@@ -13,33 +13,33 @@ async function main() {
   const hashedViewer = await bcrypt.hash("viewer123", 10);
 
   const admin = await prisma.user.upsert({
-    where: { email: "admin@fintech.com" },
+    where: { email: "admin@ledgerflow.com" },
     update: {},
     create: {
       name: "Admin User",
-      email: "admin@fintech.com",
+      email: "admin@ledgerflow.com",
       password: hashedAdmin,
       role: "ADMIN",
     },
   });
 
   await prisma.user.upsert({
-    where: { email: "analyst@fintech.com" },
+    where: { email: "analyst@ledgerflow.com" },
     update: {},
     create: {
       name: "Analyst User",
-      email: "analyst@fintech.com",
+      email: "analyst@ledgerflow.com",
       password: hashedAnalyst,
       role: "ANALYST",
     },
   });
 
   await prisma.user.upsert({
-    where: { email: "viewer@fintech.com" },
+    where: { email: "viewer@ledgerflow.com" },
     update: {},
     create: {
       name: "Viewer User",
-      email: "viewer@fintech.com",
+      email: "viewer@ledgerflow.com",
       password: hashedViewer,
       role: "VIEWER",
     },

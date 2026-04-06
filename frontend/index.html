@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#4f46e5" />
+    <meta name="description" content="LedgerFlow - Finance Dashboard for tracking income, expenses, and analytics" />
+    <title>LedgerFlow — Finance Dashboard</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+      // prevent flash of wrong theme
+      (function() {
+        var theme = localStorage.getItem('ledgerflow-theme');
+        if (!theme) {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

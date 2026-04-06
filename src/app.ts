@@ -29,10 +29,10 @@ const swaggerSpec = swaggerJsdoc({
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Finance Dashboard API",
+      title: "LedgerFlow API",
       version: "1.0.0",
       description:
-        "Backend API for a finance dashboard with role-based access control, " +
+        "LedgerFlow — Backend API for a finance dashboard with role-based access control, " +
         "financial record management, and analytics.",
     },
     components: {

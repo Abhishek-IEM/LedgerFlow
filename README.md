@@ -1,6 +1,6 @@
-# Finance Dashboard Backend
+# LedgerFlow
 
-A RESTful backend API for a finance dashboard system. It handles user management with role-based access control, financial record CRUD operations, and aggregated analytics endpoints suitable for powering a dashboard UI. Built with Node.js, TypeScript, Express, and PostgreSQL.
+A full-stack finance dashboard system with a RESTful backend API and a React-based frontend. It handles user management with role-based access control, financial record CRUD operations, and aggregated analytics endpoints. Built with Node.js, TypeScript, Express, PostgreSQL on the backend, and React with Vite on the frontend. Features Google OAuth sign-in, dark mode support, and a responsive UI.
 
 The system supports three user roles — **Viewer**, **Analyst**, and **Admin** — each with clearly scoped permissions enforced at the middleware layer, not scattered across handlers.
 
@@ -15,6 +15,7 @@ The system supports three user roles — **Viewer**, **Analyst**, and **Admin** 
 | Validation  | Zod                          | Schema-first validation that integrates cleanly with TypeScript           |
 | Docs        | Swagger UI (swagger-jsdoc)   | Reviewers can test every endpoint from a browser without extra tooling    |
 | Testing     | Jest + Supertest             | Integration tests covering auth flows, CRUD, and role enforcement         |
+| Frontend    | React + Vite + TypeScript    | Fast dev server, type-safe components, Recharts for analytics visuals     |
 
 ## Getting Started
 
@@ -51,15 +52,26 @@ npm run dev
 Open [http://localhost:3000/api/docs](http://localhost:3000/api/docs) for the interactive Swagger UI.
 Health check is at [http://localhost:3000/health](http://localhost:3000/health).
 
+### Frontend Setup
+
+```bash
+# In a separate terminal
+cd frontend
+npm install
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) to use the dashboard UI. The frontend proxies API requests to the backend at port 3000 during development.
+
 ## Test Credentials
 
 The seed script creates these accounts for quick testing:
 
 | Name          | Email               | Password    | Role    |
 |---------------|---------------------|-------------|---------|
-| Admin User    | admin@fintech.com   | admin123    | ADMIN   |
-| Analyst User  | analyst@fintech.com | analyst123  | ANALYST |
-| Viewer User   | viewer@fintech.com  | viewer123   | VIEWER  |
+| Admin User    | admin@ledgerflow.com   | admin123    | ADMIN   |
+| Analyst User  | analyst@ledgerflow.com | analyst123  | ANALYST |
+| Viewer User   | viewer@ledgerflow.com  | viewer123   | VIEWER  |
 
 It also creates 20 sample financial records across multiple categories and the last 6 months, so the dashboard endpoints return meaningful data right away.
 
@@ -69,6 +81,7 @@ It also creates 20 sample financial records across multiple categories and the l
 |--------|-----------------------------|---------------|------------------|--------------------------------------------|
 | POST   | `/api/auth/register`        | No            | Public           | Create a new account (defaults to VIEWER)  |
 | POST   | `/api/auth/login`           | No            | Public           | Login, returns JWT                         |
+| POST   | `/api/auth/google`          | No            | Public           | Sign in with Google OAuth                  |
 | GET    | `/api/users`                | Yes           | ADMIN            | List all users                             |
 | GET    | `/api/users/:id`            | Yes           | ADMIN            | Get user by ID                             |
 | PATCH  | `/api/users/:id/role`       | Yes           | ADMIN            | Update a user's role                       |
@@ -138,16 +151,24 @@ Tests cover authentication flows (register, login, duplicate rejection), record 
 ## Project Structure
 
 ```
-src/
-├── config/         # Prisma client singleton
-├── middleware/      # Auth guard, role guard, centralised error handler
-├── modules/
-│   ├── auth/       # Registration, login, JWT generation
-│   ├── users/      # User CRUD and role/status management (ADMIN only)
-│   ├── records/    # Financial record CRUD with filtering and pagination
-│   └── dashboard/  # Summary analytics, category breakdown, trends
-├── types/          # Express type extensions
-├── utils/          # AppError, response helpers, pagination
-├── app.ts          # Express app setup, middleware, route mounting
-└── server.ts       # HTTP server entry point
+├── src/                # Backend source code
+│   ├── config/         # Prisma client singleton
+│   ├── middleware/      # Auth guard, role guard, centralised error handler
+│   ├── modules/
+│   │   ├── auth/       # Registration, login, JWT generation
+│   │   ├── users/      # User CRUD and role/status management (ADMIN only)
+│   │   ├── records/    # Financial record CRUD with filtering and pagination
+│   │   └── dashboard/  # Summary analytics, category breakdown, trends
+│   ├── types/          # Express type extensions
+│   ├── utils/          # AppError, response helpers, pagination
+│   ├── app.ts          # Express app setup, middleware, route mounting
+│   └── server.ts       # HTTP server entry point
+├── frontend/           # React frontend
+│   └── src/
+│       ├── components/ # Layout, ProtectedRoute
+│       ├── context/    # AuthContext (JWT state management)
+│       ├── pages/      # Dashboard, Records, UsersPage, Login, Register
+│       └── services/   # Axios API client
+├── prisma/             # Database schema and seed script
+└── tests/              # Jest + Supertest integration tests
 ```

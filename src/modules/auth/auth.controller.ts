@@ -33,3 +33,20 @@ export const loginUser = async (
     next(err);
   }
 };
+
+export const googleLoginUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { credential } = req.body;
+    if (!credential) {
+      return res.status(400).json({ status: "error", message: "Google credential is required" });
+    }
+    const result = await authService.googleLogin(credential);
+    sendSuccess(res, result, "Google login successful");
+  } catch (err) {
+    next(err);
+  }
+};

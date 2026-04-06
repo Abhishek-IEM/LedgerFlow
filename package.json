@@ -1,7 +1,7 @@
 {
-  "name": "finance-backend",
+  "name": "ledgerflow",
   "version": "1.0.0",
-  "description": "Backend API for a finance dashboard with role-based access control",
+  "description": "LedgerFlow — Backend API for a finance dashboard with role-based access control",
   "main": "dist/server.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
@@ -26,6 +26,7 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.0",
     "express": "^5.2.1",
+    "google-auth-library": "^10.6.2",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.10.1",

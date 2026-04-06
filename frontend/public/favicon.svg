@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <!-- Ledger book shape -->
+  <rect x="15" y="12" width="34" height="40" rx="3" fill="rgba(255,255,255,0.15)"/>
+  <rect x="15" y="12" width="5" height="40" rx="2" fill="rgba(255,255,255,0.25)"/>
+  <!-- Ledger lines -->
+  <rect x="24" y="19" width="18" height="2" rx="1" fill="rgba(255,255,255,0.5)"/>
+  <rect x="24" y="26" width="14" height="2" rx="1" fill="rgba(255,255,255,0.35)"/>
+  <!-- Flow arrow — upward curve representing financial flow -->
+  <path d="M24 42 C28 38, 33 33, 38 28 Q41 25, 44 22" stroke="#fff" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+  <path d="M39 20 L44 22 L42 27" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Small accent dot -->
+  <circle cx="24" cy="42" r="2.2" fill="#a5f3fc"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="64" y2="64">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="50%" stop-color="#6d5ced"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+</svg>
