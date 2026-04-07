@@ -18,18 +18,21 @@ export default function Login() {
   const googleBtnRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    initGoogleButton();
-  }, [theme]);
-
-  const initGoogleButton = () => {
     if (!GOOGLE_CLIENT_ID) {
       setError("Google login is not configured.");
       return;
     }
 
-    if (!window.google || !googleBtnRef.current) {
+    if (!window.google) {
       // retry until GSI script loads
-      const timer = setTimeout(initGoogleButton, 200);
+      const timer = setTimeout(() => {
+        if (window.google && googleBtnRef.current) {
+          window.google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleResponse,
+          });
+        }
+      }, 200);
       return () => clearTimeout(timer);
     }
 
@@ -37,8 +40,12 @@ export default function Login() {
       client_id: GOOGLE_CLIENT_ID,
       callback: handleGoogleResponse,
     });
+  }, []); // Initialize only once on mount
 
-    // clear previous render
+  // Re-render button when theme changes
+  useEffect(() => {
+    if (!window.google || !googleBtnRef.current) return;
+
     googleBtnRef.current.innerHTML = "";
 
     window.google.accounts.id.renderButton(googleBtnRef.current, {
@@ -50,7 +57,7 @@ export default function Login() {
       width: "380",
       logo_alignment: "left",
     });
-  };
+  }, [theme]);
 
   const handleGoogleResponse = async (response: GoogleCredentialResponse) => {
     setError("");

@@ -19,17 +19,21 @@ export default function Register() {
   const googleBtnRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    initGoogleButton();
-  }, [theme]);
-
-  const initGoogleButton = () => {
     if (!GOOGLE_CLIENT_ID) {
       setError("Google sign-up is not configured.");
       return;
     }
 
-    if (!window.google || !googleBtnRef.current) {
-      const timer = setTimeout(initGoogleButton, 200);
+    if (!window.google) {
+      // retry until GSI script loads
+      const timer = setTimeout(() => {
+        if (window.google && googleBtnRef.current) {
+          window.google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleResponse,
+          });
+        }
+      }, 200);
       return () => clearTimeout(timer);
     }
 
@@ -37,6 +41,11 @@ export default function Register() {
       client_id: GOOGLE_CLIENT_ID,
       callback: handleGoogleResponse,
     });
+  }, []); // Initialize only once on mount
+
+  // Re-render button when theme changes
+  useEffect(() => {
+    if (!window.google || !googleBtnRef.current) return;
 
     googleBtnRef.current.innerHTML = "";
 
@@ -49,7 +58,7 @@ export default function Register() {
       width: "380",
       logo_alignment: "left",
     });
-  };
+  }, [theme]);
 
   const handleGoogleResponse = async (response: GoogleCredentialResponse) => {
     setError("");
